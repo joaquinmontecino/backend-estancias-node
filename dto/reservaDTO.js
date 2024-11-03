@@ -1,4 +1,3 @@
-// dtos/reservaDTO.js
 class ReservaDTO {
   constructor({ id_estancia, fecha_inicio, fecha_fin, estado }) {
     this.id_estancia = parseInt(id_estancia, 10);

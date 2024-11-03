@@ -2,9 +2,11 @@ const http = require('http');
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const estanciaRoutes = require('../routes/estanciaRoutes');
 const reservaRoutes = require('../routes/reservaRoutes');
 const pagoRoutes = require('../routes/pagoRoutes');
+const usuarioRoutes = require('../routes/usuarioRoutes');
 
 let httpServer;
 const port = process.env.HTTP_PORT || 3000;
@@ -20,6 +22,7 @@ function initialize() {
     app.use('/estancias', estanciaRoutes);
     app.use('/reservas', reservaRoutes);
     app.use('/pagos', pagoRoutes);
+    app.use('/usuarios', usuarioRoutes);
 
     httpServer.listen(port, err => {
       if (err) {

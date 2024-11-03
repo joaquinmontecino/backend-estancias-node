@@ -28,16 +28,16 @@ class EstanciaModel {
   static async updateEstancia(id, estanciaData) {
     const { nombre, tipo, precio_noche, camas_individuales, camas_dobles, disponibilidad, cocina, calefont } = estanciaData;
     const query = `
-      UPDATE Estancia 
-      SET nombre = $1, tipo = $2, precio_noche = $3, camas_individuales = $4, camas_dobles = $5, 
-          disponibilidad = $6, cocina = $7, calefont = $8 
+      UPDATE Estancia
+      SET nombre = $1, tipo = $2, precio_noche = $3, camas_individuales = $4, camas_dobles = $5,
+          disponibilidad = $6, cocina = $7, calefont = $8
       WHERE id_estancia = $9 RETURNING *
     `;
     const binds = [nombre, tipo, precio_noche, camas_individuales, camas_dobles, disponibilidad, cocina, calefont, id];
     const result = await simpleExecute(query, binds);
     return result[0];
   }
-  
+
 
   static async deleteEstancia(id) {
     const query = 'DELETE FROM Estancia WHERE id_estancia = $1';
