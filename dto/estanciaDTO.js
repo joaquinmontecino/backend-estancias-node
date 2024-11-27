@@ -14,7 +14,7 @@ class EstanciaDTO {
     const requiredFields = ['nombre', 'tipo', 'precio_noche', 'camas_individuales', 'camas_dobles', 'disponibilidad', 'cocina', 'calefont'];
 
     for (let field of requiredFields) {
-      if (!estanciaData[field]) {
+      if (!(field in estanciaData)) {
         throw new Error(`El campo ${field} es requerido.`);
       }
     }
@@ -22,10 +22,12 @@ class EstanciaDTO {
     if (isNaN(parseInt(estanciaData.precio_noche, 10))) {
       throw new Error('El precio por noche debe ser un número válido.');
     }
-    if (isNaN(parseInt(estanciaData.camas_individuales, 10)) || isNaN(parseInt(estanciaData.camas_dobles, 10))) {
-      throw new Error('Las camas deben ser números válidos.');
+    if (isNaN(parseInt(estanciaData.camas_individuales, 10))) {
+      throw new Error('Las camas individuales deben ser un número válido.');
     }
-
+    if (isNaN(parseInt(estanciaData.camas_dobles, 10))) {
+      throw new Error('Las camas dobles deben ser un número válido.');
+    }
     return true;
   }
 

@@ -7,6 +7,7 @@ const estanciaRoutes = require('../routes/estanciaRoutes');
 const reservaRoutes = require('../routes/reservaRoutes');
 const pagoRoutes = require('../routes/pagoRoutes');
 const usuarioRoutes = require('../routes/usuarioRoutes');
+const reporteRoutes = require('../routes/reporteRoutes');
 
 let httpServer;
 const port = process.env.HTTP_PORT || 3000;
@@ -17,12 +18,13 @@ function initialize() {
     httpServer = http.createServer(app);
 
     app.use(morgan('combined'));
-    app.use(express.json()); //probablemente haya que utilizar un reviver para las fechas.
+    app.use(express.json());
     app.use(cors());
     app.use('/estancias', estanciaRoutes);
     app.use('/reservas', reservaRoutes);
     app.use('/pagos', pagoRoutes);
     app.use('/usuarios', usuarioRoutes);
+    app.use('/reporte', reporteRoutes);
 
     httpServer.listen(port, err => {
       if (err) {

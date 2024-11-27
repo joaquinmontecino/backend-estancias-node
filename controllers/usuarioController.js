@@ -44,13 +44,11 @@ class UsuarioController {
   static async login(req, res){
     try {
       const { correo, contrasena} = req.body;
-      console.log("here 1");
       const { token, rol} = await UsuarioModel.loginUsuario({ correo, contrasena});
-      console.log("here 100");
       res.status(200).json({ token, rol});
     }
     catch (err){
-      res.status(401).json({ error: error.message });
+      res.status(401).json({ error: err.message });
     }
   }
 

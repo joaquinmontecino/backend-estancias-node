@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const { simpleExecute } = require('../config/database');
 
 class UsuarioModel {
@@ -38,7 +38,6 @@ class UsuarioModel {
 
     const result = await simpleExecute(statement, binds);
     const usuario = result[0];
-
     if (!usuario || !await bcrypt.compare(contrasena, usuario.contrasena)) {
       throw new Error('Correo o contraseña incorrectos');
     }
@@ -49,7 +48,6 @@ class UsuarioModel {
       { expiresIn: '3h' }
     );
 
-    console.log("here 6");
     return { token, rol: usuario.rol };
   }
 

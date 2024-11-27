@@ -15,21 +15,36 @@ class ReservaModel {
   }
 
   static async createReserva(reservaData) {
-    const { id_estancia, fecha_inicio, fecha_fin, estado } = reservaData;
-    const query = `
-      INSERT INTO Reserva (id_estancia, fecha_inicio, fecha_fin, estado) 
+    const { id_estancia, fecha_inicio, fecha_fin, estado_reserva, monto_pago, metodo_pago, estado_pago } = reservaData;
+    const queryReserva = `
+      INSERT INTO Reserva (id_estancia, fecha_inicio, fecha_fin, estado)
       VALUES ($1, $2, $3, $4) RETURNING *
     `;
-    const binds = [id_estancia, fecha_inicio, fecha_fin, estado || 'Pendiente'];
-    const result = await simpleExecute(query, binds);
-    return result[0];
+    const bindsReserva = [id_estancia, fecha_inicio, fecha_fin, estado_reserva || 'Pendiente'];
+    const resultReserva = await simpleExecute(queryReserva, bindsReserva);
+
+    const id_reserva = resultReserva.rows[0].id_reserva;
+
+    const queryPago = `
+      INSERT INTO Pago (id_reserva, monto_pago, metodo_pago, estado)
+      VALUES ($1, $2, $3, $4) RETURNING *
+    `;
+
+    const bindsPago = [id_reserva, monto_pago, metodo_pago, estado_pago];
+    const resultPago = await simpleExecute(queryPago, bindsPago);
+
+
+    return {
+      reserva: resultReserva.rows[0],
+      pago: resultPago.rows[0]
+    };
   }
 
   static async updateReserva(id, reservaData) {
     const { id_estancia, fecha_inicio, fecha_fin, estado } = reservaData;
     const query = `
-      UPDATE Reserva 
-      SET id_estancia = $1, fecha_inicio = $2, fecha_fin = $3, estado = $4 
+      UPDATE Reserva
+      SET id_estancia = $1, fecha_inicio = $2, fecha_fin = $3, estado = $4
       WHERE id_reserva = $5 RETURNING *
     `;
     const binds = [id_estancia, fecha_inicio, fecha_fin, estado, id];
