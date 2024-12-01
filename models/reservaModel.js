@@ -53,6 +53,52 @@ class ReservaModel {
     await simpleExecute(query, [id]);
     return { message: 'Reserva eliminada correctamente' };
   }
+
+  static async confirmarReserva(id){
+    const queryReserva = `
+      UPDATE RESERVA
+      SET estado = 'Confirmada'
+      WHERE id_reserva = $1 and estado = 'Pendiente'
+      RETURNING *
+    `;
+
+    const queryPago = `
+      UPDATE PAGO
+      SET estado = 'Confirmado', fecha_pago = CURRENT_TIMESTAMP
+      WHERE id_reserva = $1 RETURNING *
+    `;
+
+    const resultReserva = await simpleExecute(queryReserva, [id]);
+    const resultPago = await simpleExecute(queryPago, [id]);
+
+    return {
+      reserva: resultReserva[0],
+      pago: resultPago[0]
+    };
+  }
+
+  static async cancelarReserva(id){
+    const queryReserva = `
+      UPDATE RESERVA
+      SET estado = 'Cancelada'
+      WHERE id_reserva = $1 AND estado = 'Pendiente'
+      RETURNING *
+    `;
+
+    const queryPago = `
+      UPDATE PAGO
+      SET estado = 'Cancelado'
+      WHERE id_reserva = $1 RETURNING *
+    `;
+
+    const resultReserva = await simpleExecute(queryReserva, [id]);
+    const resultPago = await simpleExecute(queryPago, [id]);
+
+    return {
+      reserva: resultReserva[0],
+      pago: resultPago[0]
+    };
+  }
 }
 
 module.exports = ReservaModel;

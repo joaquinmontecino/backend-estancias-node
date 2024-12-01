@@ -71,6 +71,38 @@ class ReservaController {
       res.status(500).json({ error: 'Error al eliminar la reserva' });
     }
   }
+
+  static async confirmar(req, res){
+    const { id } = req.params;
+    try {
+      const reservaActual = await ReservaModel.getReservaById(id);
+      if (!reservaActual){
+        return res.status(404).json({ error: 'Reserva no encontrada' });
+      }
+
+      const reservaActualizada = await ReservaModel.confirmarReserva(id);
+      res.status(200).json(reservaActualizada);
+    } catch (err) {
+      console.error('Error al actualizar la reserva:', err.message);
+      res.status(400).json({ error: err.message });
+    }
+  }
+
+  static async cancelar(req, res){
+    const { id } = req.params;
+    try {
+      const reservaActual = await ReservaModel.getReservaById(id);
+      if (!reservaActual){
+        return res.status(404).json({ error: 'Reserva no encontrada' });
+      }
+
+      const reservaActualizada = await ReservaModel.cancelarReserva(id);
+      res.status(200).json(reservaActualizada);
+    } catch (err) {
+      console.error('Error al actualizar la reserva:', err.message);
+      res.status(400).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = ReservaController;
