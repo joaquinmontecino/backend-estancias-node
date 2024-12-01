@@ -22,21 +22,17 @@ class ReservaModel {
     `;
     const bindsReserva = [id_estancia, fecha_inicio, fecha_fin, estado_reserva || 'Pendiente'];
     const resultReserva = await simpleExecute(queryReserva, bindsReserva);
-
-    const id_reserva = resultReserva.rows[0].id_reserva;
-
+    const id_reserva = resultReserva[0].id_reserva;
     const queryPago = `
       INSERT INTO Pago (id_reserva, monto_pago, metodo_pago, estado)
       VALUES ($1, $2, $3, $4) RETURNING *
     `;
-
     const bindsPago = [id_reserva, monto_pago, metodo_pago, estado_pago];
     const resultPago = await simpleExecute(queryPago, bindsPago);
 
-
     return {
-      reserva: resultReserva.rows[0],
-      pago: resultPago.rows[0]
+      reserva: resultReserva[0],
+      pago: resultPago[0]
     };
   }
 
