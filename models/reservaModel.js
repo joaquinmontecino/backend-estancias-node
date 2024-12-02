@@ -58,7 +58,7 @@ class ReservaModel {
     const queryReserva = `
       UPDATE RESERVA
       SET estado = 'Confirmada'
-      WHERE id_reserva = $1 and estado = 'Pendiente'
+      WHERE id_reserva = $1
       RETURNING *
     `;
 
@@ -81,7 +81,7 @@ class ReservaModel {
     const queryReserva = `
       UPDATE RESERVA
       SET estado = 'Cancelada'
-      WHERE id_reserva = $1 AND estado = 'Pendiente'
+      WHERE id_reserva = $1
       RETURNING *
     `;
 
