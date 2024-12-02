@@ -62,8 +62,8 @@ class ReporteModel {
     const {fecha_inicio_1, fecha_fin_1 , fecha_inicio_2, fecha_fin_2} = periodosData;
     const query = `
         SELECT
-          COALESCE(Periodo1.Ingresos, 0) AS "Periodo 1",
-          COALESCE(Periodo2.Ingresos, 0) AS "Periodo 2",
+          COALESCE(Periodo1.Ingresos, 0) AS "Periodo_1",
+          COALESCE(Periodo2.Ingresos, 0) AS "Periodo_2",
           (COALESCE(Periodo1.Ingresos, 0) - COALESCE(Periodo2.Ingresos, 0)) AS Diferencia
         FROM
           (SELECT SUM(Pago.Monto_Pago) AS Ingresos
